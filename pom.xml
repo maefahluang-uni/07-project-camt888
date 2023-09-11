@@ -6,7 +6,6 @@
 	<version>1.0</version>
 	<packaging>pom</packaging>
 	<name>project-camt</name>
-
 	<properties>
 		<slf.version>1.7.25</slf.version>
 		<junit.version>4.12</junit.version>
