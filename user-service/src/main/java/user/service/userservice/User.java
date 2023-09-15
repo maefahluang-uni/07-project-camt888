@@ -50,4 +50,13 @@ public class User {
     public void setBalance(long balance) {
         this.balance = balance;
     }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
 }
