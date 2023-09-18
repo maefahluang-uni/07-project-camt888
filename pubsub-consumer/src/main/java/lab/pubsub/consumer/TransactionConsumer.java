@@ -10,9 +10,9 @@ public class TransactionConsumer {
 	Logger LOG = LoggerFactory.getLogger(TransactionConsumer.class);
 
 	// TODO: add listener methods here
-	@KafkaListener(topics = "banktrans")
-	void listener(String transaction) {
+	@KafkaListener(topics = "camt888")
+	void listener(String random) {
 		System.out.println("listener called");
-		LOG.info(transaction);
+		LOG.info(random);
 	}
 }

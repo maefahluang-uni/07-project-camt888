@@ -20,18 +20,13 @@ public class RandomGenerator implements Runnable{
 		while (!interrupted) {
 
 			// generate a transaction randomly
-			int randomFirst = ThreadLocalRandom.current().nextInt(0, 4);
-			int randomSec = ThreadLocalRandom.current().nextInt(0, 4);
-            int randomThird = ThreadLocalRandom.current().nextInt(0, 4);
-			Random random = new Random(RandomType.values()[randomFirst]);
-            Random random1 = new Random(RandomType.values()[randomSec]);
-            Random random2 = new Random(RandomType.values()[randomThird]);
+			int randomFirst = ThreadLocalRandom.current().nextInt(0, 5);
+			int randomSec = ThreadLocalRandom.current().nextInt(0, 5);
+            int randomThird = ThreadLocalRandom.current().nextInt(0, 5);
+			Random random = new Random(RandomType.values()[randomFirst],RandomType.values()[randomSec],RandomType.values()[randomThird]);
 			System.out.println(interrupted + " Random created " + randomFirst + " - " + randomSec+ " - " +randomThird);
-
 			// TODO: push Random to messaging broker
 			kafkaTemplate.send("camt888", random);
-            kafkaTemplate.send("camt888", random1);
-            kafkaTemplate.send("camt888", random2);
 			try {
 				// wait for 3 seconds before loop to generate a new transaction
 				Thread.sleep(3000);
