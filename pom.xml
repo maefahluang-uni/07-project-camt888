@@ -21,6 +21,7 @@
 		<module>eureka-naming-server</module>
 		<module>web-front</module>
 		<module>user-service</module>
+		<module>random-number</module>
 	</modules>
 	
 	
