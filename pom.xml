@@ -22,6 +22,7 @@
 		<module>web-front</module>
 		<module>user-service</module>
 		<module>random-number</module>
+		<module>user-history</module>
 	</modules>
 	
 	
