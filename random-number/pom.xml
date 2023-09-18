@@ -9,10 +9,10 @@
 		<version>2.5.0</version>
 		<relativePath />
 	</parent>
-	<groupId>th.ac.mfu</groupId>
-	<artifactId>lab-pubsub-producer</artifactId>
+	<groupId>com.example</groupId>
+	<artifactId>random-number</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>lab-pubsub-producer</name>
+	<name>random-number</name>
 	<description>Service to generate transaction</description>
 	<properties>
 		<java.version>11</java.version>

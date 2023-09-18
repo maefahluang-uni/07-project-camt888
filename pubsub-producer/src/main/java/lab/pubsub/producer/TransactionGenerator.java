@@ -32,7 +32,7 @@ public class TransactionGenerator implements Runnable {
 
 			try {
 				// wait for 3 seconds before generating a new transaction
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				System.out.println("Thread is interrupted");
 				// set to true to break out of this loop
