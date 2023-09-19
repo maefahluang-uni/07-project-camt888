@@ -23,6 +23,7 @@
 		<module>user-service</module>
 		<module>random-number</module>
 		<module>user-history</module>
+		<module>coin-exchange</module>
 	</modules>
 	
 	

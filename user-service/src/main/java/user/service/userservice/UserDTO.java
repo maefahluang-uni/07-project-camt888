@@ -4,8 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-public class User {
+public class UserDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,20 +18,14 @@ public class User {
 
     private long balance;
 
-    // relationship to other entity(Account Class)
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
-
-    public User() {
+    public UserDTO() {
     }
 
-    public User(Long id, String fname, String lname, long balance, Account account) {
+    public UserDTO(Long id, String fname, String lname, long balance) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.balance = balance;
-        this.account = account;
     }
 
     public Long getId() {
@@ -65,14 +58,6 @@ public class User {
 
     public void setBalance(long balance) {
         this.balance = balance;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
 }

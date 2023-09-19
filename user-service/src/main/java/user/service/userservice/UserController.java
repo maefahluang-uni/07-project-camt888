@@ -22,6 +22,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapping userMapping;
+
     // Select all Player
     @GetMapping("/users")
     public Collection<User> getAllPlayers() {
@@ -45,7 +48,7 @@ public class UserController {
     // Select Player by User name
     @GetMapping("/users/username/{username}")
     public ResponseEntity getPlayerByName(@PathVariable String username) {
-        List<User> users = userRepository.findByUsername(username);
+        List<User> users = userRepository.findByFname(username);
 
         if (users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -66,27 +69,26 @@ public class UserController {
     }
 
     // partial update player with some fields using patch
-    // @PatchMapping("/users/{id}")
-    // public ResponseEntity<String> patchPlayer(@PathVariable long id, @RequestBody
-    // PlayerDT0 playerDTO) {
-    // // find player by id
-    // Optional<Player> optPlayer = playerRepository.findById(id);
-    // // check if id exists
-    // if (!optPlayer.isPresent()) {
-    // // return error message
-    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Player not found");
-    // }
-    // // get player from db
-    // Player player = optPlayer.get();
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<String> patchUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
+        // find player by id
+        Optional<User> optUser = userRepository.findById(id);
+        // check if id exists
+        if (!optUser.isPresent()) {
+            // return error message
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        // get player from db
+        User user = optUser.get();
 
-    // // update player by using mapper from dto
-    // playerMapper.updatePlayerFromDto(playerDTO, player);
+        // update player by using mapper from dto
+        userMapping.updateUserFromDTO(userDTO, user);
 
-    // // save to db
-    // playerRepository.save(player);
+        // save to db
+        userRepository.save(user);
 
-    // return ResponseEntity.ok("Player updated");
-    // }
+        return ResponseEntity.ok("User updated");
+    }
 
     // update employee
     @PutMapping("/users/")
@@ -117,7 +119,7 @@ public class UserController {
         userRepository.deleteById(id);
 
         // return success message
-        return ResponseEntity.ok("Player deleted");
+        return ResponseEntity.ok("User deleted");
     }
 
 }
