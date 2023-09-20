@@ -25,15 +25,13 @@ public class UserController {
     @Autowired
     private UserMapping userMapping;
 
-    // Select all Player
     @GetMapping("/users")
-    public Collection<User> getAllPlayers() {
+    public Collection<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Select Player by ID
     @GetMapping("/users/{id}")
-    public ResponseEntity getPlayerById(@PathVariable long id) {
+    public ResponseEntity getUserById(@PathVariable long id) {
         Optional<User> optUser = userRepository.findById(id);
 
         // check if id is null
@@ -45,9 +43,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // Select Player by User name
     @GetMapping("/users/username/{username}")
-    public ResponseEntity getPlayerByName(@PathVariable String username) {
+    public ResponseEntity getUserByName(@PathVariable String username) {
         List<User> users = userRepository.findByFname(username);
 
         if (users.isEmpty()) {
@@ -56,9 +53,8 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    // Create New Player
     @PostMapping("/users")
-    public ResponseEntity<String> createPlayer(@RequestBody User user) {
+    public ResponseEntity<String> createUser(@RequestBody User user) {
         // chesk if id already exist
 
         // add new Player to respository
@@ -68,7 +64,6 @@ public class UserController {
         return ResponseEntity.ok("User created success!");
     }
 
-    // partial update player with some fields using patch
     @PatchMapping("/users/{id}")
     public ResponseEntity<String> patchUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
         // find player by id
@@ -90,9 +85,8 @@ public class UserController {
         return ResponseEntity.ok("User updated");
     }
 
-    // update employee
     @PutMapping("/users/")
-    public ResponseEntity<String> updatePlayer(@RequestBody User user) {
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
         // check if id not exists
         if (!userRepository.existsById(user.getId())) {
             // return error message
@@ -106,9 +100,8 @@ public class UserController {
         return ResponseEntity.ok("User updated");
     }
 
-    // Delete Employee
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deletePlayer(@PathVariable long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable long id) {
         // check if id not exists
         if (!userRepository.existsById(id)) {
             // return error message
