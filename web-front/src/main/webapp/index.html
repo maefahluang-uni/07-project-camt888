@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create and List Concerts</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Hello!!</h1>
+
+</body>
+
+<script>
+    $(document).ready(function() {
+        // Load concerts
+        function loadConcerts() {
+            $('#concertList').html(''); // Clear concert list
+            $.ajax({
+                type: 'GET', // GET request to retrieve concerts
+                url: 'http://localhost:8080/concerts', // URL of your REST service
+                success: function(response) {
+                    console.log('Concerts:', response);
+                    response.forEach(function(concert) {
+                        // Add concert details to concertList
+                        $('#concertList').append('<p>Title: ' + concert.title + ', Date: ' + concert.date + ', Performer: ' + concert.performer.name + '</p>');
+                    });
+                },
+                error: function(error) {
+                    console.error('Error loading concerts:', error);
+                }
+            });
+        }
+
+        // Load concerts on page load
+        loadConcerts();
+        
+        // Reload button click event
+        $('#reloadButton').click(function() {
+            loadConcerts();
+        });
+
+        // Handle form submission
+        $('#createConcertForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Prepare concert data as JSON
+            var concertData = {
+                title: $('#title').val(),
+                date: $('#dateTime').val(),
+                performer: {
+                    name: $('#performer-name').val(),
+                    imageUri: $('#performer-imageUri').val()
+                }
+            };
+            
+            // Send POST request to create concert
+            $.ajax({
+                type: 'POST', // POST request to create a concert
+                url: 'http://localhost:8080/concerts', // URL of your REST service
+                data: JSON.stringify(concertData),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Concert created successfully:', response);
+                    // Reload concert list after successful creation
+                    loadConcerts();
+                },
+                error: function(error) {
+                    console.error('Error creating concert:', error);
+                }
+            });
+            
+            // Reset form fields
+            $('#title').val('');
+            $('#dateTime').val('');
+            $('#performer-name').val('');
+            $('#performer-imageUri').val('');
+        });
+    });
+</script>
+</html>
