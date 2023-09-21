@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,13 +43,17 @@ public class AccountController {
     // Create New Player
     @PostMapping("/accounts")
     public ResponseEntity<String> createAccount(@RequestBody Account account) {
-        // chesk if id already exist
+        // Check if the username already exists
+        if (accountRepository.existsByUsername(account.getUsername())) {
+            // Return an error response if the username is already taken
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account already exists");
+        }
 
-        // add new Player to respository
+        // If the username is not taken, proceed with account creation
         accountRepository.save(account);
 
-        // retrun success message
-        return ResponseEntity.ok("Account created success!");
+        // Return a success response
+        return ResponseEntity.ok("Account created successfully");
     }
 
     @PutMapping("/accounts/")

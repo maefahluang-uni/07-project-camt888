@@ -9,4 +9,6 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 
     public List<Account> findAll();
 
+    public boolean existsByUsername(String username);
+
 }

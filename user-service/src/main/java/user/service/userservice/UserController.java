@@ -22,8 +22,8 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserMapping userMapping;
+    // @Autowired
+    // private UserMapping userMapping;
 
     @GetMapping("/users")
     public Collection<User> getAllUsers() {
@@ -64,26 +64,27 @@ public class UserController {
         return ResponseEntity.ok("User created success!");
     }
 
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<String> patchUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
-        // find player by id
-        Optional<User> optUser = userRepository.findById(id);
-        // check if id exists
-        if (!optUser.isPresent()) {
-            // return error message
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-        // get player from db
-        User user = optUser.get();
+    // @PatchMapping("/users/{id}")
+    // public ResponseEntity<String> patchUser(@PathVariable long id, @RequestBody
+    // UserDTO userDTO) {
+    // // find player by id
+    // Optional<User> optUser = userRepository.findById(id);
+    // // check if id exists
+    // if (!optUser.isPresent()) {
+    // // return error message
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    // }
+    // // get player from db
+    // User user = optUser.get();
 
-        // update player by using mapper from dto
-        userMapping.updateUserFromDTO(userDTO, user);
+    // // update player by using mapper from dto
+    // userMapping.updateUserFromDTO(userDTO, user);
 
-        // save to db
-        userRepository.save(user);
+    // // save to db
+    // userRepository.save(user);
 
-        return ResponseEntity.ok("User updated");
-    }
+    // return ResponseEntity.ok("User updated");
+    // }
 
     @PutMapping("/users/")
     public ResponseEntity<String> updateUser(@RequestBody User user) {

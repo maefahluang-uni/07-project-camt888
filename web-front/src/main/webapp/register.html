@@ -3,12 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>Account Registration</title>
+    <style>
+        /* Add CSS styles for your page here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #registrationForm {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>User Registration</h1>
+    <h1>Account Registration</h1>
+    
     <form id="registrationForm">
-      
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <input type="submit" value="Register">
     </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Retrieve form data
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Create an object to represent the account
+            const account = {
+                username: username,
+                password: password
+            };
+
+            // Send the data to your API endpoint using fetch
+            fetch('http://localhost:8080/accounts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(account)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('message').textContent = 'Account registered successfully!';
+                    document.getElementById('message').style.color = 'green';
+                } else {
+                    document.getElementById('message').textContent = 'Error registering account.';
+                    document.getElementById('message').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Error registering account.';
+                document.getElementById('message').style.color = 'red';
+            });
+        });
+    </script>
 </body>
 </html>
