@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import com.example.randomnumber.Random.RandomType;
 
-public class RandomGenerator implements Runnable{
-    @Autowired
+public class RandomGenerator implements Runnable {
+	@Autowired
 	private KafkaTemplate<String, Random> kafkaTemplate;
 
 	public RandomGenerator(KafkaTemplate<String, Random> kafkaTemplate2) {
@@ -22,9 +22,11 @@ public class RandomGenerator implements Runnable{
 			// generate a transaction randomly
 			int randomFirst = ThreadLocalRandom.current().nextInt(0, 5);
 			int randomSec = ThreadLocalRandom.current().nextInt(0, 5);
-            int randomThird = ThreadLocalRandom.current().nextInt(0, 5);
-			Random random = new Random(RandomType.values()[randomFirst],RandomType.values()[randomSec],RandomType.values()[randomThird]);
-			System.out.println(interrupted + " Random created " + randomFirst + " - " + randomSec+ " - " +randomThird);
+			int randomThird = ThreadLocalRandom.current().nextInt(0, 5);
+			Random random = new Random(RandomType.values()[randomFirst], RandomType.values()[randomSec],
+					RandomType.values()[randomThird]);
+			System.out
+					.println(interrupted + " Random created " + randomFirst + " - " + randomSec + " - " + randomThird);
 			// TODO: push Random to messaging broker
 			kafkaTemplate.send("camt888", random);
 			try {

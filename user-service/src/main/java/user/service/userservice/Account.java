@@ -12,6 +12,18 @@ public class Account {
     private String username;
     private String password;
 
+    private long balance;
+
+    public Account() {
+    }
+
+    public Account(Long id, String username, String password, long balance) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.balance = balance;
+    }
+
     public Long getId() {
         return id;
     }
@@ -34,6 +46,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
 }

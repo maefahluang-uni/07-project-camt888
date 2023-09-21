@@ -16,8 +16,6 @@ public class UserDTO {
     @JsonProperty("lname")
     private String lname;
 
-    private long balance;
-
     public UserDTO() {
     }
 
@@ -25,7 +23,6 @@ public class UserDTO {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
-        this.balance = balance;
     }
 
     public Long getId() {
@@ -50,14 +47,6 @@ public class UserDTO {
 
     public void setLname(String lname) {
         this.lname = lname;
-    }
-
-    public long getBalance() {
-        return balance;
-    }
-
-    public void setBalance(long balance) {
-        this.balance = balance;
     }
 
 }

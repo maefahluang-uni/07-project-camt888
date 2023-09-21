@@ -17,8 +17,6 @@ public class User {
     @JsonProperty("lname")
     private String lname;
 
-    private long balance;
-
     // relationship to other entity(Account Class)
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -31,7 +29,6 @@ public class User {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
-        this.balance = balance;
         this.account = account;
     }
 
@@ -57,14 +54,6 @@ public class User {
 
     public void setLname(String lname) {
         this.lname = lname;
-    }
-
-    public long getBalance() {
-        return balance;
-    }
-
-    public void setBalance(long balance) {
-        this.balance = balance;
     }
 
     public Account getAccount() {
