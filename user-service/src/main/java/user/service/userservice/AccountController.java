@@ -1,6 +1,8 @@
 package user.service.userservice;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -69,6 +72,72 @@ public class AccountController {
 
         // return success message
         return ResponseEntity.ok("User updated");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> loginRequest) {
+        String username = loginRequest.get("username");
+        String password = loginRequest.get("password");
+
+        // Check if a user with the provided username exists
+        if (!accountRepository.existsByUsername(username)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
+        }
+
+        // Retrieve the user's account from the database
+        Account userAccount = accountRepository.findByUsername(username);
+
+        long balance = accountRepository.findByUsername(username).getBalance();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", username);
+        response.put("balance", balance);
+
+        // Check if the provided password matches the stored password
+        if (!userAccount.getPassword().equals(password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+        }
+
+        // Authentication successful
+        return ResponseEntity.ok("Login to: " + username + " successful!");
+    }
+
+    @GetMapping("/getUserData")
+    public ResponseEntity<?> getUserData(@RequestParam Long userId) {
+        // Check if a user with the provided userId exists in the database
+        Optional<Account> optAcc = accountRepository.findById(userId);
+
+        if (!optAcc.isPresent()) {
+            // Return an error response if the user is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Retrieve the user's data and create a response
+        Account userAccount = optAcc.get();
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("username", userAccount.getUsername());
+        userData.put("balance", userAccount.getBalance());
+
+        // Return the user data as a JSON response
+        return ResponseEntity.ok(userData);
+    }
+
+    @GetMapping("/getUserDataByUsername")
+    public ResponseEntity<?> getUserDataByUsername(@RequestParam String username) {
+        // Check if a user with the provided username exists in the database
+        Account userAccount = accountRepository.findByUsername(username);
+
+        if (userAccount == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
+        }
+
+        // Map the user data to a custom structure
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("username", userAccount.getUsername());
+        userData.put("balance", userAccount.getBalance()); // Assuming you want to map the balance to "data"
+
+        // Return the user data as a JSON response
+        return ResponseEntity.ok(userData);
     }
 
     @DeleteMapping("/accounts/{id}")

@@ -19,7 +19,6 @@ public class UserServiceApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				// TODO: make sure the port of web front is correct.
-				// registry.addMapping("/concerts").allowedOrigins("http://localhost:8080");
 				registry.addMapping("/**");
 			}
 		};

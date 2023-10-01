@@ -56,11 +56,11 @@
 <body>
     <div class="navbar">
         <ul>
-            <li>Usernanme</li>
-            <li>balance: 999</li>
+            <li id="usernameElement">Username</li>
+            <li id="balanceElement">Balance: 999</li>
         </ul>
     </div>
-
+    
     <div class="slot-content">
         <div class="display-number" id="randomNumber">
             <!-- display random number here -->
@@ -87,6 +87,31 @@
 
     // Add an event listener to the "Play!" button
     document.querySelector('.spin-btn').addEventListener('click', generateRandomNumber);
+
+
+    // Function to extract query parameters from the URL
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Get the username from the query parameter
+    const username = getQueryParam("userId");
+    console.log("username is:" + username);
+
+    // Make an AJAX request to your backend to retrieve user data based on username
+    fetch(`http://localhost:8080/getUserDataByUsername?username=${username}`)
+        .then(response => response.json())
+        .then(data => {
+            // Update the HTML content with the retrieved data
+            document.getElementById('usernameElement').innerText = `Username: ${data.username}`; // Use lowercase "username"
+            document.getElementById('balanceElement').innerText = `Balance: ${data.balance}`; // Use lowercase "balance"
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+
 </script>
 
 </html>

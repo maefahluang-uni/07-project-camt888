@@ -12,7 +12,7 @@ public class Account {
     private String username;
     private String password;
 
-    private long balance;
+    private long balance = 0;
 
     public Account() {
     }

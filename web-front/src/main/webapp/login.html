@@ -16,7 +16,7 @@
             color: #333;
         }
 
-        #registrationForm {
+        #loginForm {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -60,7 +60,7 @@
 <body>
     <h1>Account Login</h1>
     
-    <form id="registrationForm">
+    <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
@@ -71,42 +71,55 @@
     </form>
 
     <div id="message"></div>
-
+    
     <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            // Retrieve form data
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Create an object to represent the account
-            const account = {
+        // Get a reference to the form and message div
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+    
+        // Add an event listener to the form's submit action
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+    
+            // Get the values of username and password from the form
+            const username = form.querySelector("#username").value;
+            const password = form.querySelector("#password").value;
+    
+            // Create a JSON object with the username and password
+            const loginData = {
                 username: username,
                 password: password
             };
-
-            // Send the data to your API endpoint using fetch
-            fetch('http://localhost:8080/accounts', {
-                method: 'POST',
+    
+            // Make a POST request to the /login endpoint
+            fetch("http://localhost:8080/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(account)
+                body: JSON.stringify(loginData)
             })
             .then(response => {
                 if (response.ok) {
-                    document.getElementById('message').textContent = 'Account registered successfully!';
-                    document.getElementById('message').style.color = 'green';
+                    // Successful login, display a success message
+                    message.innerHTML = "Login successful";
+                    message.style.color = "green";
+                    
+                    // Get the username from the loginData
+                    const userId = loginData.username;
+                    
+                    // Redirect to index.html with userId as a query parameter
+                    console.log(userId)
+                    window.location.href = `index.html?username=${userId}`;
                 } else {
-                    document.getElementById('message').textContent = 'Error registering account.';
-                    document.getElementById('message').style.color = 'red';
+                    // Failed login, display an error message
+                    message.innerHTML = "Login failed. Please check your credentials.";
+                    message.style.color = "red";
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('message').textContent = 'Error registering account.';
-                document.getElementById('message').style.color = 'red';
+                console.error("Error:", error);
+                // Handle any network or server errors here
             });
         });
     </script>
