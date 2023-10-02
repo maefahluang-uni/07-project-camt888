@@ -57,23 +57,25 @@
     <div class="navbar">
         <ul>
             <li id="usernameElement">Username</li>
-            <li id="balanceElement">Balance: 999</li>
+            <li id="balanceElement">Balance: <span id="balanceAmount">0</span></li>
         </ul>
     </div>
     
     <div class="slot-content">
         <div class="display-number" id="randomNumber">
-            <!-- display random number here -->
+            <!-- Display random number here -->
         </div>
     </div>
 
     <div class="play-content">
         <button class="spin-btn">Play!</button>
-        <input type="text" class="user-bet" placeholder="pleace your bet">
+        <input type="text" class="user-bet" placeholder="Place your bet">
+        <button id="addFundButton">Add Fund</button>
+        <button id="withdrawButton">Withdraw</button>
     </div>
-   
 
-    
+    <!-- Your JavaScript code here -->
+
 </body>
 <script>
     // Function to generate and display a random number
@@ -88,7 +90,6 @@
     // Add an event listener to the "Play!" button
     document.querySelector('.spin-btn').addEventListener('click', generateRandomNumber);
 
-
     // Function to extract query parameters from the URL
     function getQueryParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -97,7 +98,7 @@
 
     // Get the username from the query parameter
     const username = getQueryParam("username");
-    console.log("username is:" + username);
+    console.log("Username is: " + username);
 
     // Make an AJAX request to your backend to retrieve user data based on username
     fetch(`http://localhost:8080/getUserDataByUsername?username=${username}`)
@@ -105,11 +106,77 @@
         .then(data => {
             // Update the HTML content with the retrieved data
             document.getElementById('usernameElement').innerText = `Username: ${data.username}`;
-            document.getElementById('balanceElement').innerText = `Balance: ${data.balance}`;
+            document.getElementById('balanceAmount').innerText = data.balance;
         })
         .catch(error => {
             console.error("Error:", error);
         });
+
+    // Add event listener for the "Add Fund" button
+    document.getElementById('addFundButton').addEventListener('click', function() {
+        const fundsToAdd = parseFloat(prompt("Enter the amount to add:"));
+        
+        if (!isNaN(fundsToAdd) && fundsToAdd > 0) {
+            // Send an AJAX POST request to add funds to the user's account
+            fetch(`http://localhost:8080/addFunds?username=${username}&amount=${fundsToAdd}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the balance display
+                    const updatedBalance = parseFloat(document.getElementById('balanceAmount').textContent) + fundsToAdd;
+                    document.getElementById('balanceAmount').textContent = updatedBalance;
+                    alert("Funds added successfully!");
+                    location.reload();
+                } else {
+                    alert("Failed to add funds. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        } else {
+            alert("Please enter a valid amount to add.");
+        }
+    });
+
+
+    document.getElementById('withdrawButton').addEventListener('click', function() {
+        const currentBalance = parseFloat(document.getElementById('balanceAmount').textContent);
+        const amountToWithdraw = parseFloat(prompt("Enter the amount to withdraw:"));
+        
+        if (!isNaN(amountToWithdraw) && amountToWithdraw > 0 && amountToWithdraw <= currentBalance) {
+            // Send an AJAX POST request to withdraw funds from the user's account
+            fetch(`http://localhost:8080/withdrawFunds?username=${username}&amount=${amountToWithdraw}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the balance display
+                    const updatedBalance = currentBalance - amountToWithdraw;
+                    document.getElementById('balanceAmount').textContent = updatedBalance;
+                    alert("Funds withdrawn successfully!");
+                    location.reload();
+                } else {
+                    alert("Failed to withdraw funds. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        } else {
+            alert("Invalid withdrawal amount.");
+        }
+    });
+
 
 </script>
 

@@ -2,15 +2,19 @@ package user.service.userservice;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
+
+import javax.security.auth.login.AccountNotFoundException;
+
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,18 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AccountController {
+
     @Autowired
     private AccountRepository accountRepository;
 
-    // Select all Player
+    @Autowired
+    private AccountMapper accountMapper;
+
+    // Select all Employee
     @GetMapping("/accounts")
     public Collection<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
 
-    // Select Player by ID
+    // Select Employee by ID
     @GetMapping("/accounts/{id}")
-    public ResponseEntity getPlayerById(@PathVariable long id) {
+    public ResponseEntity getAccountById(@PathVariable long id) {
         Optional<Account> optAcc = accountRepository.findById(id);
 
         // check if id is null
@@ -39,26 +47,45 @@ public class AccountController {
             // return error 404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
         }
-        Account account = optAcc.get();
-        return ResponseEntity.ok(account);
+        Account acc = optAcc.get();
+        return ResponseEntity.ok(acc);
     }
 
-    // Create New Player
+    // Create New Employee
     @PostMapping("/accounts")
     public ResponseEntity<String> createAccount(@RequestBody Account account) {
-        // Check if the username already exists
-        if (accountRepository.existsByUsername(account.getUsername())) {
-            // Return an error response if the username is already taken
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account already exists");
-        }
+        // chesk if id already exist
 
-        // If the username is not taken, proceed with account creation
+        // add new employee to respository
         accountRepository.save(account);
 
-        // Return a success response
-        return ResponseEntity.ok("Account created successfully");
+        // retrun success message
+        return ResponseEntity.ok("Account created success!");
     }
 
+    // partial update employee with some fields using patch
+    @PatchMapping("/accounts/{id}")
+    public ResponseEntity<String> patchAccount(@PathVariable long id, @RequestBody AccountDTO accountDto) {
+        // find employee by id
+        Optional<Account> optAcc = accountRepository.findById(id);
+        // check if id exists
+        if (!optAcc.isPresent()) {
+            // return error message
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
+        }
+        // get employee from db
+        Account acc = optAcc.get();
+
+        // update employee by using mapper from dto
+        accountMapper.updateAccountFromDto(accountDto, acc);
+
+        // save to db
+        accountRepository.save(acc);
+
+        return ResponseEntity.ok("Account updated");
+    }
+
+    // update employee
     @PutMapping("/accounts/")
     public ResponseEntity<String> updateAccount(@RequestBody Account account) {
         // check if id not exists
@@ -71,7 +98,23 @@ public class AccountController {
         accountRepository.save(account);
 
         // return success message
-        return ResponseEntity.ok("User updated");
+        return ResponseEntity.ok("Account updated");
+    }
+
+    // Delete Employee
+    @DeleteMapping("/accounts/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable long id) {
+        // check if id not exists
+        if (!accountRepository.existsById(id)) {
+            // return error message
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
+        }
+
+        // delete employee
+        accountRepository.deleteById(id);
+
+        // return success message
+        return ResponseEntity.ok("Account deleted");
     }
 
     @PostMapping("/login")
@@ -100,6 +143,63 @@ public class AccountController {
 
         // Authentication successful
         return ResponseEntity.ok("Login to: " + username + " successful!");
+    }
+
+    @PostMapping("/addFunds")
+    public ResponseEntity<?> addFunds(@RequestParam String username, @RequestParam long amount) {
+        // Check if a user with the provided username exists in the database
+        Account userAccount = accountRepository.findByUsername(username);
+
+        if (userAccount == null) {
+            // Return an error response as JSON
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        // Update the user's balance in the database
+        userAccount.setBalance(userAccount.getBalance() + amount);
+        accountRepository.save(userAccount);
+
+        // Return a success response as JSON
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Funds added successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/withdrawFunds")
+    public ResponseEntity<?> withdrawFunds(@RequestParam String username, @RequestParam long amount) {
+        // Check if a user with the provided username exists in the database
+        Account userAccount = accountRepository.findByUsername(username);
+
+        if (userAccount == null) {
+            // Return an error response as JSON
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        // Check if the user has sufficient balance for withdrawal
+        if (userAccount.getBalance() >= amount) {
+            // Update the user's balance in the database
+            userAccount.setBalance(userAccount.getBalance() - amount);
+            accountRepository.save(userAccount);
+
+            // Return a success response as JSON
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Funds withdrawn successfully");
+            return ResponseEntity.ok(response);
+        } else {
+            // Return an error response as JSON for insufficient balance
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Insufficient balance for withdrawal");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     @GetMapping("/getUserData")
@@ -138,21 +238,6 @@ public class AccountController {
 
         // Return the user data as a JSON response
         return ResponseEntity.ok(userData);
-    }
-
-    @DeleteMapping("/accounts/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable long id) {
-        // check if id not exists
-        if (!accountRepository.existsById(id)) {
-            // return error message
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
-        }
-
-        // delete employee
-        accountRepository.deleteById(id);
-
-        // return success message
-        return ResponseEntity.ok("User deleted");
     }
 
 }
