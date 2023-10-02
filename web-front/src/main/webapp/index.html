@@ -101,7 +101,7 @@
     console.log("Username is: " + username);
 
     // Make an AJAX request to your backend to retrieve user data based on username
-    fetch(`http://localhost:8080/getUserDataByUsername?username=${username}`)
+    fetch(`http://localhost:8000/getUserDataByUsername?username=${username}`)
         .then(response => response.json())
         .then(data => {
             // Update the HTML content with the retrieved data
@@ -118,7 +118,7 @@
         
         if (!isNaN(fundsToAdd) && fundsToAdd > 0) {
             // Send an AJAX POST request to add funds to the user's account
-            fetch(`http://localhost:8080/addFunds?username=${username}&amount=${fundsToAdd}`, {
+            fetch(`http://localhost:8000/addFunds?username=${username}&amount=${fundsToAdd}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -151,7 +151,7 @@
         
         if (!isNaN(amountToWithdraw) && amountToWithdraw > 0 && amountToWithdraw <= currentBalance) {
             // Send an AJAX POST request to withdraw funds from the user's account
-            fetch(`http://localhost:8080/withdrawFunds?username=${username}&amount=${amountToWithdraw}`, {
+            fetch(`http://localhost:8000/withdrawFunds?username=${username}&amount=${amountToWithdraw}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
