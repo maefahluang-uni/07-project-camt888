@@ -96,7 +96,7 @@
     }
 
     // Get the username from the query parameter
-    const username = getQueryParam("userId");
+    const username = getQueryParam("username");
     console.log("username is:" + username);
 
     // Make an AJAX request to your backend to retrieve user data based on username
@@ -104,13 +104,12 @@
         .then(response => response.json())
         .then(data => {
             // Update the HTML content with the retrieved data
-            document.getElementById('usernameElement').innerText = `Username: ${data.username}`; // Use lowercase "username"
-            document.getElementById('balanceElement').innerText = `Balance: ${data.balance}`; // Use lowercase "balance"
+            document.getElementById('usernameElement').innerText = `Username: ${data.username}`;
+            document.getElementById('balanceElement').innerText = `Balance: ${data.balance}`;
         })
         .catch(error => {
             console.error("Error:", error);
         });
-
 
 </script>
 
