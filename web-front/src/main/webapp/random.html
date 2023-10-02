@@ -60,7 +60,7 @@
   <div class="navbar">
     <ul>
       <li id="usernameElement">Username</li>
-      <li id="balanceElement">Balance: 999</li>
+      <li id="balanceElement"></li>
     </ul>
   </div>
 
@@ -77,47 +77,74 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    function loadConcerts() {
-      // Use the correct selector for slot-content
-      $(".slot-content").html(""); // Clear concert list
-      $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/concerts",
-        success: function (response) {
-          console.log("Concerts:", response);
-          response.forEach(function (concert) {
-            // Generate random numbers
-            var randomNumber = Math.floor(Math.random() * 5) + 1;
-            var randomNumber1 = Math.floor(Math.random() * 5) + 1;
-            var randomNumber2 = Math.floor(Math.random() * 5) + 1;
 
-            $(".slot-content").append(
-              "<p>number1: " +
-              randomNumber +
-              ", number2: " +
-              randomNumber1 +
-              ", number3: " +
-              randomNumber2 +
-              "</p>"
-            );
-          });
-        },
-        error: function (error) {
-          console.error("Error loading concerts:", error);
-        },
-      });
-    }
+    var userBalance = 1000;
+    var userBet = $("#userBet").val();
+    $("#balanceElement").text("Balance : " + userBalance);
 
-    // Load concerts on page load
-    // loadConcerts();
+      function loadConcerts() {
+        // Use the correct selector for slot-content
+        $(".slot-content").html(""); // Clear concert list
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:8080/camt888s",
+          success: function (response) {
+            console.log("Camt888:", response);
+            response.forEach(function (concert) {
+              // Generate random numbers
+              var randomNumber = Math.floor(Math.random() * 5) + 1;
+              var randomNumber1 = Math.floor(Math.random() * 5) + 1;
+              var randomNumber2 = Math.floor(Math.random() * 5) + 1;
 
-    // Handle form submission
-    $("#spinBtn").on('click', function (event) {
+              $(".slot-content").append(
+                "<p>number1: " +
+                randomNumber +
+                ", number2: " +
+                randomNumber1 +
+                ", number3: " +
+                randomNumber2 +
+                "</p>"
+              );
+            });
+          },
+          error: function (error) {
+            console.error("Error loading concerts:", error);
+          },
+        });
+      }
+
+      // Load concerts on page load
+      // loadConcerts();
+
+      // Handle form submission
+
+
+      $("#spinBtn").on('click', function (event) {
       event.preventDefault(); // Prevent default form submission
 
-      var randomNumber = Math.floor(Math.random() * 6) + 1;
-      var randomNumber1 = Math.floor(Math.random() * 6) + 1;
-      var randomNumber2 = Math.floor(Math.random() * 6) + 1;
+      var userBet = $("#userBet").val().trim();
+
+      // Check if the input field is empty
+      if (userBet === "") {
+        alert("Please enter a bet amount.");
+      }
+
+      userBet = parseInt(userBet);
+
+      // Check if the user has enough balance to place the bet
+      if (userBet <= userBalance) {
+        // Deduct the bet from the user's balance
+        var newBalance = userBalance - userBet;
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+      } else {
+        alert("Insufficient balance to place this bet.");
+        return; // Exit the function if the balance is insufficient
+      }
+
+      var randomNumber = Math.floor(Math.random() * 5) + 1;
+      var randomNumber1 = Math.floor(Math.random() * 5) + 1;
+      var randomNumber2 = Math.floor(Math.random() * 5) + 1;
 
       // Update the displayed random numbers
       $("#randomNumber").text('Random Number: ' + randomNumber);
@@ -130,10 +157,14 @@
         number3: randomNumber2
       };
 
+      if (randomNumber == randomNumber1 && randomNumber1 == randomNumber2) {
+        alert("Equals");
+      }
+
       // Send POST request to create concert
       $.ajax({
         type: "POST",
-        url: "http://localhost:8080/concerts",
+        url: "http://localhost:8080/camt888s",
         data: JSON.stringify(concertData),
         contentType: "application/json",
         success: function (response) {

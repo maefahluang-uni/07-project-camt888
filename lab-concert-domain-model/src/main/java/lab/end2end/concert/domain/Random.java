@@ -3,7 +3,7 @@ package lab.end2end.concert.domain;
 import javax.persistence.*;
 
 @Entity
-public class Concert {
+public class Random {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,11 +13,11 @@ public class Concert {
     private int number2;
     private int number3;
 
-    public Concert() {
+    public Random() {
         // Default constructor required by JPA
     }
 
-    public Concert(int number1, int number2, int number3) {
+    public Random(int number1, int number2, int number3) {
         this.number1 = number1;
         this.number2 = number2;
         this.number3 = number3;

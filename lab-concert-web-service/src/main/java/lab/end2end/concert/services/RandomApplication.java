@@ -10,9 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 //TODO: add annotation to scan for entities
 @EntityScan(basePackages = {"lab/end2end/concert/domain"})
-public class ConcertApplication {
+public class RandomApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ConcertApplication.class, args);
+        SpringApplication.run(RandomApplication.class, args);
     }
 
     @Bean
