@@ -25,6 +25,8 @@
 		<module>user-history</module>
 		<module>loadbalancer-service</module>
 		<module>coin-exchange</module>
+		<module>lab-concert-domain-model</module>
+		<module>lab-concert-web-service</module>
 	</modules>
 	
 	
