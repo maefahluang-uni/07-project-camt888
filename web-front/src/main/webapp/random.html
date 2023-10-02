@@ -82,44 +82,44 @@
     var userBet = $("#userBet").val();
     $("#balanceElement").text("Balance : " + userBalance);
 
-      function loadConcerts() {
-        // Use the correct selector for slot-content
-        $(".slot-content").html(""); // Clear concert list
-        $.ajax({
-          type: "GET",
-          url: "http://localhost:8080/camt888s",
-          success: function (response) {
-            console.log("Camt888:", response);
-            response.forEach(function (concert) {
-              // Generate random numbers
-              var randomNumber = Math.floor(Math.random() * 5) + 1;
-              var randomNumber1 = Math.floor(Math.random() * 5) + 1;
-              var randomNumber2 = Math.floor(Math.random() * 5) + 1;
+    function loadConcerts() {
+      // Use the correct selector for slot-content
+      $(".slot-content").html(""); // Clear concert list
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/camt888s",
+        success: function (response) {
+          console.log("Camt888:", response);
+          response.forEach(function (concert) {
+            // Generate random numbers
+            var randomNumber = Math.floor(Math.random() * 2) + 1;
+            var randomNumber1 = Math.floor(Math.random() * 2) + 1;
+            var randomNumber2 = Math.floor(Math.random() * 2) + 1;
 
-              $(".slot-content").append(
-                "<p>number1: " +
-                randomNumber +
-                ", number2: " +
-                randomNumber1 +
-                ", number3: " +
-                randomNumber2 +
-                "</p>"
-              );
-            });
-          },
-          error: function (error) {
-            console.error("Error loading concerts:", error);
-          },
-        });
-      }
+            $(".slot-content").append(
+              "<p>number1: " +
+              randomNumber +
+              ", number2: " +
+              randomNumber1 +
+              ", number3: " +
+              randomNumber2 +
+              "</p>"
+            );
+          });
+        },
+        error: function (error) {
+          console.error("Error loading concerts:", error);
+        },
+      });
+    }
 
-      // Load concerts on page load
-      // loadConcerts();
+    // Load concerts on page load
+    // loadConcerts();
 
-      // Handle form submission
+    // Handle form submission
 
 
-      $("#spinBtn").on('click', function (event) {
+    $("#spinBtn").on('click', function (event) {
       event.preventDefault(); // Prevent default form submission
 
       var userBet = $("#userBet").val().trim();
@@ -137,14 +137,15 @@
         var newBalance = userBalance - userBet;
         userBalance = newBalance;
         $("#balanceElement").text("Balance : " + userBalance);
+        console.log(userBalance);
       } else {
         alert("Insufficient balance to place this bet.");
         return; // Exit the function if the balance is insufficient
       }
 
-      var randomNumber = Math.floor(Math.random() * 5) + 1;
-      var randomNumber1 = Math.floor(Math.random() * 5) + 1;
-      var randomNumber2 = Math.floor(Math.random() * 5) + 1;
+      var randomNumber = Math.floor(Math.random() * 2) + 1;
+      var randomNumber1 = Math.floor(Math.random() * 2) + 1;
+      var randomNumber2 = Math.floor(Math.random() * 2) + 1;
 
       // Update the displayed random numbers
       $("#randomNumber").text('Random Number: ' + randomNumber);
@@ -157,8 +158,43 @@
         number3: randomNumber2
       };
 
-      if (randomNumber == randomNumber1 && randomNumber1 == randomNumber2) {
-        alert("Equals");
+
+      if (randomNumber == 1 && randomNumber1 == 1 && randomNumber2 == 1) {
+        newBalance = userBalance + (userBet * 1);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+
+      }
+      else if (randomNumber == 2 && randomNumber1 == 2 && randomNumber2 == 2) {
+        newBalance = userBalance + (userBet * 2);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+      }
+      else if (randomNumber == 3 && randomNumber1 == 3 && randomNumber2 == 3) {
+        newBalance = userBalance + (userBet * 3);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+      }
+      else if (randomNumber == 4 && randomNumber1 == 4 && randomNumber2 == 4) {
+        newBalance = userBalance + (userBet * 4);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+      }
+      else if (randomNumber == 5 && randomNumber1 == 5 && randomNumber2 == 5) {
+        newBalance = userBalance + (userBet * 5);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
+      }
+      else if (randomNumber == 6 && randomNumber1 == 6 && randomNumber2 == 6) {
+        newBalance = userBalance + (userBet * 6);
+        console.log("hello" + userBalance + " " + newBalance);
+        userBalance = newBalance;
+        $("#balanceElement").text("Balance : " + userBalance);
       }
 
       // Send POST request to create concert
