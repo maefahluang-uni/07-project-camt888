@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Login</title>
+    <style>
+        /* Add CSS styles for your page here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #withdrawForm {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            margin: 0px 40px 0px 40px;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Account Login</h1>
+    
+    <form id="withdrawForm">
+        <label>Current balance:</label>
+        <label for="deposit">Enter money(In):</label>
+        <input type="text" id="deposit" name="deposit" placeholder="how much deposit" >
+        
+
+        <label for="withdraw">Withdraw:</label>
+        <input type="text" id="withdraw" name="withdraw" placeholder="how much to withdraw">
+        <input type="submit" value="Deposit">
+        <input type="submit" value="Withdraw">
+    </form>
+    
+    <!-- Add this script block inside the <script> tags in your HTML -->
+<!-- Add this script block inside the <script> tags in your HTML -->
+    <script>
+        // Initialize the current balance
+        let currentBalance = parseFloat(document.getElementById("balanceElement").textContent);
+    
+        // Function to handle form submission
+        document.getElementById("withdrawForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+    
+            // Get the input values
+            const moneyIn = parseFloat(document.getElementById("money-in").value);
+            const withdraw = parseFloat(document.getElementById("withdraw").value);
+    
+            // Check if the input values are valid numbers
+            if (isNaN(moneyIn) || isNaN(withdraw)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+    
+            // Deposit money
+            if (moneyIn > 0) {
+                currentBalance += moneyIn;
+            }
+    
+            // Withdraw money
+            if (withdraw > 0 && withdraw <= currentBalance) {
+                currentBalance -= withdraw;
+            } else {
+                alert("Invalid withdrawal amount.");
+                return;
+            }
+    
+            // Update the balance display
+            document.getElementById("balanceElement").textContent = currentBalance;
+    
+            // Clear the input fields
+            document.getElementById("money-in").value = "";
+            document.getElementById("withdraw").value = "";
+        });
+    </script>
+    
+
+</body>
+</html>
