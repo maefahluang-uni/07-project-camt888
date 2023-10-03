@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>main page</title>
     <style>
-        *{
+        * {
             margin: 0px;
         }
-        .navbar{
+
+        .navbar {
             width: 100%;
             height: 75px;
             background-color: aqua;
@@ -17,27 +19,28 @@
             flex-wrap: wrap;
             font-size: x-large;
         }
-        .navbar ul li{
+
+        .navbar ul li {
             display: inline;
             float: right;
             margin: 20px 200px 0px 0px;
         }
 
-        .slot-content{
+        .slot-content {
             margin: 10% auto 0 auto;
             width: 550px;
             height: 150px;
             border: 1px solid black;
         }
 
-        .play-content{
+        .play-content {
             margin: 25px auto 0 auto;
             width: 550px;
             height: 150px;
             /* border: 1px solid black; */
         }
 
-        .play-content .spin-btn{
+        .play-content .spin-btn {
             background-color: greenyellow;
             border: none;
             border-radius: 12px;
@@ -45,14 +48,14 @@
             height: 50px;
         }
 
-        .play-content .user-bet{
+        .play-content .user-bet {
             border-radius: 12px;
             width: 99%;
             height: 30px;
         }
-      
     </style>
 </head>
+
 <body>
     <div class="navbar">
         <ul>
@@ -60,16 +63,16 @@
             <li id="balanceElement">Balance: <span id="balanceAmount">0</span></li>
         </ul>
     </div>
-    
+
     <div class="slot-content">
-        <div class="display-number" id="randomNumber">
-            <!-- Display random number here -->
-        </div>
+        <div class="display-number" id="randomNumber"></div>
+        <div class="display-number" id="randomNumber1"></div>
+        <div class="display-number" id="randomNumber2"></div>
     </div>
 
     <div class="play-content">
-        <button class="spin-btn">Play!</button>
-        <input type="text" class="user-bet" placeholder="Place your bet">
+        <button class="spin-btn" id="spinBtn">Play!</button>
+        <input type="text" class="user-bet" id="userBet" placeholder="Place your bet">
         <button id="addFundButton">Add Fund</button>
         <button id="withdrawButton">Withdraw</button>
     </div>
@@ -77,19 +80,10 @@
     <!-- Your JavaScript code here -->
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Function to generate and display a random number
-    function generateRandomNumber() {
-        // Generate a random number between 1 and 100 (you can adjust the range)
-        var randomNumber = Math.floor(Math.random() * 100) + 1;
-        
-        // Display the random number in the div
-        document.getElementById('randomNumber').innerText = 'Random Number: ' + randomNumber;
-    }
-
-    // Add an event listener to the "Play!" button
-    document.querySelector('.spin-btn').addEventListener('click', generateRandomNumber);
-
+    var random = 3;
+    var userBalance;
     // Function to extract query parameters from the URL
     function getQueryParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -113,9 +107,9 @@
         });
 
     // Add event listener for the "Add Fund" button
-    document.getElementById('addFundButton').addEventListener('click', function() {
+    document.getElementById('addFundButton').addEventListener('click', function () {
         const fundsToAdd = parseFloat(prompt("Enter the amount to add:"));
-        
+
         if (!isNaN(fundsToAdd) && fundsToAdd > 0) {
             // Send an AJAX POST request to add funds to the user's account
             fetch(`http://localhost:8000/addFunds?username=${username}&amount=${fundsToAdd}`, {
@@ -124,31 +118,31 @@
                     'Content-Type': 'application/json',
                 },
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update the balance display
-                    const updatedBalance = parseFloat(document.getElementById('balanceAmount').textContent) + fundsToAdd;
-                    document.getElementById('balanceAmount').textContent = updatedBalance;
-                    alert("Funds added successfully!");
-                    location.reload();
-                } else {
-                    alert("Failed to add funds. Please try again later.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the balance display
+                        const updatedBalance = parseFloat(document.getElementById('balanceAmount').textContent) + fundsToAdd;
+                        document.getElementById('balanceAmount').textContent = updatedBalance;
+                        alert("Funds added successfully!");
+                        location.reload();
+                    } else {
+                        alert("Failed to add funds. Please try again later.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         } else {
             alert("Please enter a valid amount to add.");
         }
     });
 
-
-    document.getElementById('withdrawButton').addEventListener('click', function() {
+    //withdraw
+    document.getElementById('withdrawButton').addEventListener('click', function () {
         const currentBalance = parseFloat(document.getElementById('balanceAmount').textContent);
         const amountToWithdraw = parseFloat(prompt("Enter the amount to withdraw:"));
-        
+
         if (!isNaN(amountToWithdraw) && amountToWithdraw > 0 && amountToWithdraw <= currentBalance) {
             // Send an AJAX POST request to withdraw funds from the user's account
             fetch(`http://localhost:8000/withdrawFunds?username=${username}&amount=${amountToWithdraw}`, {
@@ -157,27 +151,171 @@
                     'Content-Type': 'application/json',
                 },
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update the balance display
-                    const updatedBalance = currentBalance - amountToWithdraw;
-                    document.getElementById('balanceAmount').textContent = updatedBalance;
-                    alert("Funds withdrawn successfully!");
-                    location.reload();
-                } else {
-                    alert("Failed to withdraw funds. Please try again later.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the balance display
+                        const updatedBalance = currentBalance - amountToWithdraw;
+                        document.getElementById('balanceAmount').textContent = updatedBalance;
+                        alert("Funds withdrawn successfully!");
+                        location.reload();
+                    } else {
+                        alert("Failed to withdraw funds. Please try again later.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         } else {
             alert("Invalid withdrawal amount.");
         }
     });
 
 
+    //bonus
+    document.getElementById('spinBtn').addEventListener('click', function () {
+        event.preventDefault();
+        const currentBalance = parseFloat(document.getElementById('balanceAmount').textContent);
+        const betamount = parseFloat(prompt("Enter the amount to Bet:"));
+        let bonus = 0;
+        if (!isNaN(betamount) && betamount > 0 && betamount <= currentBalance) {
+            var randomNumber = Math.floor(Math.random() * random) + 1;
+            var randomNumber1 = Math.floor(Math.random() * random) + 1;
+            var randomNumber2 = Math.floor(Math.random() * random) + 1;
+
+            // Update the displayed random numbers
+            $("#randomNumber").text('Random Number: ' + randomNumber);
+            $("#randomNumber1").text('Random Number: ' + randomNumber1);
+            $("#randomNumber2").text('Random Number: ' + randomNumber2);
+
+            var concertData = {
+                number1: randomNumber,
+                number2: randomNumber1,
+                number3: randomNumber2
+            };
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/camt888s",
+                data: JSON.stringify(concertData),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("Random created successfully:", response);
+                },
+                error: function (error) {
+                    console.error("Error creating concert:", error);
+                },
+            });
+
+
+            if (randomNumber == randomNumber1 && randomNumber1 == randomNumber2) {
+                if (randomNumber == 1 && randomNumber1 == 1 && randomNumber2 == 1) {
+                    bonus = currentBalance + (betamount * 1);
+                    console.log("hello" + betamount + " " + currentBalance + " " + bonus);
+                    document.getElementById('balanceAmount').textContent = bonus;
+                }
+                else if (randomNumber == 2 && randomNumber1 == 2 && randomNumber2 == 2) {
+
+                    bonus = currentBalance + (betamount * 2);
+                    console.log("hello" + betamount + " " + currentBalance + " " + bonus);
+                    document.getElementById('balanceAmount').textContent = bonus;
+
+                }
+                else if (randomNumber == 3 && randomNumber1 == 3 && randomNumber2 == 3) {
+
+                    bonus = currentBalance + (betamount * 3);
+                    console.log("hello" + betamount + " " + currentBalance + " " + bonus);
+                    document.getElementById('balanceAmount').textContent = bonus;
+                }
+                
+                fetch(`http://localhost:8000/bonuses?username=${username}&amount=${bonus}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update the balance display
+                            console.log("Bonus" + bonus);
+                        } else {
+                            alert("Failed to add funds. Please try again later.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            }
+
+
+
+            else {
+                // Send an AJAX POST request to withdraw funds from the user's account
+                fetch(`http://localhost:8000/withdrawFunds?username=${username}&amount=${betamount}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update the balance display
+                            if (betamount <= currentBalance) {
+                                // Deduct the bet from the user's balance
+                                const updatedBalance = currentBalance - betamount;
+                                document.getElementById('balanceAmount').textContent = updatedBalance;
+                                console.log(updatedBalance);
+                            } else {
+                                alert("Insufficient balance to place this bet.");
+                                return;
+                            }
+                        } else {
+                            alert("Failed to withdraw funds. Please try again later.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            }
+        }
+        else {
+            alert("Invalid Bet amount.");
+        }
+    });
+
+
+
+    function loadConcerts() {
+        // Use the correct selector for slot-content
+        $(".slot-content").html(""); // Clear concert list
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/camt888s",
+            success: function (response) {
+                console.log("Camt888:", response);
+                response.forEach(function (concert) {
+                    // Generate random numbers
+                    var randomNumber = Math.floor(Math.random() * random) + 1;
+                    var randomNumber1 = Math.floor(Math.random() * random) + 1;
+                    var randomNumberrandom = Math.floor(Math.random() * random) + 1;
+
+                    $(".slot-content").append(
+                        "<p>number1: " +
+                        randomNumber +
+                        ", number2: " +
+                        randomNumber1 +
+                        ", number3: " +
+                        randomNumber2 +
+                        "</p>"
+                    );
+                });
+            },
+            error: function (error) {
+                console.error("Error loading concerts:", error);
+            },
+        });
+    }
 </script>
 
 </html>

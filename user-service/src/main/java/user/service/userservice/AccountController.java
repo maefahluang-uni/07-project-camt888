@@ -170,6 +170,30 @@ public class AccountController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/bonuses")
+    public ResponseEntity<?> bonus(@RequestParam String username, @RequestParam long amount) {
+        // Check if a user with the provided username exists in the database
+        Account userAccount = accountRepository.findByUsername(username);
+
+        if (userAccount == null) {
+            // Return an error response as JSON
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        // Update the user's balance in the database
+        userAccount.setBalance(amount);
+        accountRepository.save(userAccount);
+
+        // Return a success response as JSON
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Funds added successfully");
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/withdrawFunds")
     public ResponseEntity<?> withdrawFunds(@RequestParam String username, @RequestParam long amount) {
         // Check if a user with the provided username exists in the database
