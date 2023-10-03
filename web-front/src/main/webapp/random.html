@@ -92,9 +92,9 @@
           console.log("Camt888:", response);
           response.forEach(function (concert) {
             // Generate random numbers
-            var randomNumber = Math.floor(Math.random() * 2) + 1;
-            var randomNumber1 = Math.floor(Math.random() * 2) + 1;
-            var randomNumber2 = Math.floor(Math.random() * 2) + 1;
+            var randomNumber = Math.floor(Math.random() * 5) + 1;
+            var randomNumber1 = Math.floor(Math.random() * 5) + 1;
+            var randomNumber2 = Math.floor(Math.random() *5) + 1;
 
             $(".slot-content").append(
               "<p>number1: " +
@@ -143,9 +143,9 @@
         return; // Exit the function if the balance is insufficient
       }
 
-      var randomNumber = Math.floor(Math.random() * 2) + 1;
-      var randomNumber1 = Math.floor(Math.random() * 2) + 1;
-      var randomNumber2 = Math.floor(Math.random() * 2) + 1;
+      var randomNumber = Math.floor(Math.random() * 5) + 1;
+      var randomNumber1 = Math.floor(Math.random() * 5) + 1;
+      var randomNumber2 = Math.floor(Math.random() * 5) + 1;
 
       // Update the displayed random numbers
       $("#randomNumber").text('Random Number: ' + randomNumber);
@@ -190,13 +190,7 @@
         userBalance = newBalance;
         $("#balanceElement").text("Balance : " + userBalance);
       }
-      else if (randomNumber == 6 && randomNumber1 == 6 && randomNumber2 == 6) {
-        newBalance = userBalance + (userBet * 6);
-        console.log("hello" + userBalance + " " + newBalance);
-        userBalance = newBalance;
-        $("#balanceElement").text("Balance : " + userBalance);
-      }
-
+     
       // Send POST request to create concert
       $.ajax({
         type: "POST",

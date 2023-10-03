@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "RandomnumberApplication",
+            "request": "launch",
+            "mainClass": "random.service.randomnumber.RandomnumberApplication",
+            "projectName": "random-number-service"
+        },
+        {
+            "type": "java",
             "name": "UserServiceApplication",
             "request": "launch",
             "mainClass": "user.service.userservice.UserServiceApplication",
@@ -84,8 +91,7 @@
             "name": "User-history-service",
             "request": "launch",
             "mainClass": "com.example.demo.UserServiceApplication",
-            "projectName": "user-history",
-         
+            "projectName": "user-history"
         },
         {
             "type": "java",
