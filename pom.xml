@@ -21,12 +21,11 @@
 		<module>eureka-naming-server</module>
 		<module>web-front</module>
 		<module>user-service</module>
-		<module>random-number</module>
 		<module>user-history</module>
 		<module>loadbalancer-service</module>
 		<module>coin-exchange</module>
 		<module>lab-concert-domain-model</module>
-		<module>lab-concert-web-service</module>
+		<module>random-number-service</module>
 	</modules>
 	
 	
