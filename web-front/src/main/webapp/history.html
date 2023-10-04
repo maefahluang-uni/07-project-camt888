@@ -61,19 +61,46 @@
                     <th>Withdraw</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>EZY</td>
-                    <td>$200</td>
-                    <td>$100</td>
-                </tr>
-                <tr>
-                    <td>Tunk</td>
-                    <td>$1000</td>
-                    <td>$500</td>
-                </tr>
+            <tbody id="historyTableBody">
+                <!-- Table rows will be dynamically generated here -->
             </tbody>
         </table>
     </div>
+
+    <script>
+        // Function to fetch and display account history
+        async function fetchAccountHistory() {
+            try {
+                const response = await fetch('http://localhost:8080/accounts');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch account history');
+                }
+                const data = await response.json();
+                const tableBody = document.getElementById('historyTableBody');
+
+                // Loop through the data and generate table rows
+                data.forEach(account => {
+                    const row = document.createElement('tr');
+                    const usernameCell = document.createElement('td');
+                    const depositCell = document.createElement('td');
+                    const withdrawCell = document.createElement('td');
+
+                    usernameCell.textContent = account.username;
+                    depositCell.textContent = '$' + account.deposit; 
+                    withdrawCell.textContent = '$' + account.withdraw; 
+
+                    row.appendChild(usernameCell);
+                    row.appendChild(depositCell);
+                    row.appendChild(withdrawCell);
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        fetchAccountHistory();
+    </script>
 </body>
 </html>
+
