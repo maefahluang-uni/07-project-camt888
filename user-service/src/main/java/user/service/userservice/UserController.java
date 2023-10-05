@@ -22,8 +22,8 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    // @Autowired
-    // private UserMapping userMapping;
+    @Autowired
+    private UserMapper userMapping;
 
     @GetMapping("/users")
     public Collection<User> getAllUsers() {
@@ -65,7 +65,8 @@ public class UserController {
     }
 
     // @PatchMapping("/users/{id}")
-    // public ResponseEntity<String> patchUser(@PathVariable long id, @RequestBody
+    // public ResponseEntity<String> patchUser(@PathVariable long id,
+    // @RequestBody
     // UserDTO userDTO) {
     // // find player by id
     // Optional<User> optUser = userRepository.findById(id);
