@@ -14,14 +14,17 @@ public class Account {
 
     private long balance = 0;
 
+    private int port;
+
     public Account() {
     }
 
-    public Account(Long id, String username, String password, long balance) {
+    public Account(Long id, String username, String password, long balance, int port) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.balance = balance;
+        this.port = port;
     }
 
     public Long getId() {
@@ -54,6 +57,14 @@ public class Account {
 
     public void setBalance(long balance) {
         this.balance = balance;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
 }

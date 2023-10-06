@@ -12,6 +12,8 @@ public class AccountDTO {
 
     private long balance = 0;
 
+    private int port;
+
     public Long getId() {
         return id;
     }
@@ -42,6 +44,14 @@ public class AccountDTO {
 
     public void setBalance(long balance) {
         this.balance = balance;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
 }
