@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "LoadbalancerApplication",
+            "request": "launch",
+            "mainClass": "loadbalancer.service.loadbalancer.LoadbalancerApplication",
+            "projectName": "loadbalancer.service-loadbalancer-service"
+        },
+        {
+            "type": "java",
             "name": "RandomnumberApplication",
             "request": "launch",
             "mainClass": "random.service.randomnumber.RandomnumberApplication",

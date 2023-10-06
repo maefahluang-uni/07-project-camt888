@@ -71,7 +71,7 @@
         // Function to fetch and display account history
         async function fetchAccountHistory() {
             try {
-                const response = await fetch('http://localhost:8080/accounts');
+                const response = await fetch('http://localhost:8000/accounts');
                 if (!response.ok) {
                     throw new Error('Failed to fetch account history');
                 }
@@ -86,8 +86,8 @@
                     const withdrawCell = document.createElement('td');
 
                     usernameCell.textContent = account.username;
-                    depositCell.textContent = '$' + account.deposit; 
-                    withdrawCell.textContent = '$' + account.withdraw; 
+                    depositCell.textContent = '$' + account.password; 
+                    withdrawCell.textContent = '$' + account.balance; 
 
                     row.appendChild(usernameCell);
                     row.appendChild(depositCell);
