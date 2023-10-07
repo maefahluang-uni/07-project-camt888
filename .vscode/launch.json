@@ -13,13 +13,6 @@
         },
         {
             "type": "java",
-            "name": "RandomnumberApplication",
-            "request": "launch",
-            "mainClass": "random.service.randomnumber.RandomnumberApplication",
-            "projectName": "random-number-service"
-        },
-        {
-            "type": "java",
             "name": "UserServiceApplication",
             "request": "launch",
             "mainClass": "user.service.userservice.UserServiceApplication",
@@ -60,13 +53,6 @@
         },
         {
             "type": "java",
-            "name": "CoinExchangeApplication",
-            "request": "launch",
-            "mainClass": "user.coin.coinexchange.CoinExchangeApplication",
-            "projectName": "coin-exchange"
-        },
-        {
-            "type": "java",
             "name": "Eureka-server-service",
             "request": "launch",
             "mainClass": "lab.microservice.namingserver.SpringBootMicroserviceEurekaNamingServerApplication",
@@ -74,30 +60,16 @@
         },
         {
             "type": "java",
-            "name": "TransactionConsumerApplication",
+            "name": "random-number-service",
             "request": "launch",
-            "mainClass": "lab.pubsub.consumer.TransactionConsumerApplication",
-            "projectName": "pubsub-consumer"
-        },
-        {
-            "type": "java",
-            "name": "TransationProducerApplication",
-            "request": "launch",
-            "mainClass": "lab.pubsub.producer.TransationProducerApplication",
-            "projectName": "pubsub-producer"
-        },
-        {
-            "type": "java",
-            "name": "RandomNumberApplication",
-            "request": "launch",
-            "mainClass": "com.example.randomnumber.RandomNumberApplication",
-            "projectName": "random-number"
+            "mainClass": "random.service.randomnumber.RandomnumberApplication",
+            "projectName": "random-number-service"
         },
         {
             "type": "java",
             "name": "User-history-service",
             "request": "launch",
-            "mainClass": "com.example.demo.UserServiceApplication",
+            "mainClass": "com.example.demo.UserHistoryApplication",
             "projectName": "user-history"
         },
         {

@@ -16,14 +16,11 @@
 	</properties>
 	
 	<modules>
-		<module>pubsub-producer</module>
-		<module>pubsub-consumer</module>
 		<module>eureka-naming-server</module>
 		<module>web-front</module>
 		<module>user-service</module>
 		<module>user-history</module>
 		<module>loadbalancer-service</module>
-		<module>coin-exchange</module>
 		<module>lab-concert-domain-model</module>
 		<module>random-number-service</module>
 	</modules>

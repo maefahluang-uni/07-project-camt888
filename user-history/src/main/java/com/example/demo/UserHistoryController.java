@@ -90,6 +90,7 @@ public class UserHistoryController {
         // return success message
         return ResponseEntity.ok("Account deleted");
     }
+
     @PostMapping("/addhisFunds")
     public ResponseEntity<?> addFunds(@RequestParam String username, @RequestParam long amount) {
         // Check if a user with the provided username exists in the database
@@ -113,6 +114,7 @@ public class UserHistoryController {
         response.put("message", "Funds added successfully");
         return ResponseEntity.ok(response);
     }
+
     @PostMapping("/withdrawhisFunds")
     public ResponseEntity<?> withdrawFunds(@RequestParam String username, @RequestParam long amount) {
         // Check if a user with the provided username exists in the database
@@ -145,7 +147,7 @@ public class UserHistoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-    
+
     @GetMapping("/getUserData")
     public ResponseEntity<?> getUserData(@RequestParam Long userId) {
         // Check if a user with the provided userId exists in the database
@@ -183,10 +185,4 @@ public class UserHistoryController {
         // Return the user data as a JSON response
         return ResponseEntity.ok(userData);
     }
-
-
-
-
-
-
 }

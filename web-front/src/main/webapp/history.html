@@ -51,14 +51,14 @@
     </style>
 </head>
 <body>
-    <h1>History</h1>
+    <h1>User-History</h1>
     <div class="container">
         <table>
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Deposit</th>
-                    <th>Withdraw</th>
+                    <th>Balance</th>
+                    <th>Password</th>
                 </tr>
             </thead>
             <tbody id="historyTableBody">
@@ -86,8 +86,8 @@
                     const withdrawCell = document.createElement('td');
 
                     usernameCell.textContent = account.username;
-                    depositCell.textContent = '$' + account.password; 
-                    withdrawCell.textContent = '$' + account.balance; 
+                    depositCell.textContent = account.balance+'$' ; 
+                    withdrawCell.textContent = account.password; 
 
                     row.appendChild(usernameCell);
                     row.appendChild(depositCell);
@@ -103,4 +103,3 @@
     </script>
 </body>
 </html>
-
