@@ -1,5 +1,6 @@
 package user.service.userservice;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +33,9 @@ public class AccountController {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private KafkaTemplate<String, LoginEvent> kafkaTemplate;
 
     // Select all Employee
     @GetMapping("/accounts")
@@ -141,6 +146,15 @@ public class AccountController {
         if (!userAccount.getPassword().equals(password)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
         }
+
+        // Create and configure the AccountGenerator
+        AccountGenerator accGen = new AccountGenerator(kafkaTemplate, username);
+        // accGen.setKafkaTemplate(kafkaTemplate);
+
+        // Start AccountGenerator as a separate thread
+        Thread accountGeneratorThread = new Thread(accGen);
+        accountGeneratorThread.start();
+        accountGeneratorThread.interrupt();
 
         // Authentication successful
         return ResponseEntity.ok("Login to: " + username + " successful!");

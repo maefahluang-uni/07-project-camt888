@@ -16,6 +16,10 @@ public class Account {
 
     private int port;
 
+    public enum TransactionType {
+        Deposit, Withdraw
+    };
+
     public Account() {
     }
 
