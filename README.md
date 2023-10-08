@@ -50,11 +50,29 @@ Project Explaination
         It's a way to talk to another service called "user-account-service" over HTTP.
         The createAccount() method sends a request to create a new account in the "user-account-service."
 
-***Random-service**
+***Random-service***
 
     ตัวDomain Random โดยจะมีการสุ่มเลขทั้งหมด3ตัวเพื่อนำไปใช้ในpathต่างๆเช่น
         Get("/camt888s")เพื่อดึงข้อมูลที่มีมาแสดง
         POST("/camt888s")เพื่อการใส่ข้อมูลลงไป
         DELETE("/camt888s")เป็นการลบข้อมูล
         PUT("/camt888s")เพื่ออัพเดตข้อมูล
+
+***User-History Service***
+
+This service about history when customer login the information will be displayed on the History page.
+
+Have about 3 file.
+
+    History
+
+            This file is used to declare variables and store values.
+
+    UserHistoryController 
+
+            This file is used to Get,Put,Delete,Post in path history.
+
+    UserHistoryRepository
+
+            This file is used to create Function.
 
